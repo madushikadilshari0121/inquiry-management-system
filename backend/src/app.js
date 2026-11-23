@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const pool = require('./db/pool');
 const { notFound, errorHandler } = require('./middleware/errorHandler');
 const authRoutes = require('./routes/authRoutes');
+const inquiryRoutes = require('./routes/inquiryRoutes');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.get('/api/health', async (req, res, next) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/inquiries', inquiryRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

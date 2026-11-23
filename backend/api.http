@@ -24,3 +24,90 @@ GET http://localhost:4000/api/auth/me
 
 ### 6. Logout → 204
 POST http://localhost:4000/api/auth/logout
+
+### ===== INQUIRIES =====
+
+### A. List without login → 401
+GET http://localhost:4000/api/inquiries
+
+### B. Login as staff1
+POST http://localhost:4000/api/auth/login
+Content-Type: application/json
+
+{ "email": "staff1@example.com", "password": "Staff@123" }
+
+### C. List → only IDs 1 and 2 (NOT 3)
+GET http://localhost:4000/api/inquiries
+
+### D. Filter by status
+GET http://localhost:4000/api/inquiries?status=NEW
+
+### E. Search
+GET http://localhost:4000/api/inquiries?search=refund
+
+### F. Invalid status filter → 400
+GET http://localhost:4000/api/inquiries?status=DONE
+
+### G. Create with missing fields → 400 with details
+POST http://localhost:4000/api/inquiries
+Content-Type: application/json
+
+{ "customerName": "", "contactEmail": "", "subject": "Hi" }
+
+### H. Create valid → 201
+POST http://localhost:4000/api/inquiries
+Content-Type: application/json
+
+{
+  "customerName": "Saman Kumara",
+  "contactPhone": "0711234567",
+  "subject": "Booking question",
+  "description": "Can I change my booking date?"
+}
+
+### I. Same request again → 409 DUPLICATE_INQUIRY
+POST http://localhost:4000/api/inquiries
+Content-Type: application/json
+
+{
+  "customerName": "Saman Kumara",
+  "contactPhone": "0711234567",
+  "subject": "Booking question",
+  "description": "Can I change my booking date?"
+}
+
+### J. Invalid ID → 400
+GET http://localhost:4000/api/inquiries/abc
+
+### K. Non-existent ID → 404
+GET http://localhost:4000/api/inquiries/9999
+
+### L. staff2's inquiry (direct link bypass) → 404
+GET http://localhost:4000/api/inquiries/3
+
+### M. Invalid transition NEW → RESOLVED → 422
+PATCH http://localhost:4000/api/inquiries/1/status
+Content-Type: application/json
+
+{ "status": "RESOLVED", "version": 1 }
+
+### N. Valid transition NEW → IN_PROGRESS → 200 (version becomes 2)
+PATCH http://localhost:4000/api/inquiries/1/status
+Content-Type: application/json
+
+{ "status": "IN_PROGRESS", "version": 1 }
+
+### O. Same old version again (stale tab) → 409 STALE_INQUIRY
+PATCH http://localhost:4000/api/inquiries/1/status
+Content-Type: application/json
+
+{ "status": "RESOLVED", "version": 1 }
+
+### P. Login as admin
+POST http://localhost:4000/api/auth/login
+Content-Type: application/json
+
+{ "email": "admin@example.com", "password": "Admin@123" }
+
+### Q. Admin sees inquiry 3 → 200
+GET http://localhost:4000/api/inquiries/3

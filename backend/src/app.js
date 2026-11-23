@@ -3,6 +3,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const pool = require('./db/pool');
 const { notFound, errorHandler } = require('./middleware/errorHandler');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.get('/api/health', async (req, res, next) => {
   }
 });
 
-// Routes will be added here in the next steps
+app.use('/api/auth', authRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

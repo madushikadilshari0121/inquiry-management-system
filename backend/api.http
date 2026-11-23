@@ -1,0 +1,26 @@
+### 1. Missing fields → 400 VALIDATION_ERROR
+POST http://localhost:4000/api/auth/login
+Content-Type: application/json
+
+{ "email": "not-an-email" }
+
+### 2. Wrong password → 401 INVALID_CREDENTIALS
+POST http://localhost:4000/api/auth/login
+Content-Type: application/json
+
+{ "email": "staff1@example.com", "password": "wrong" }
+
+### 3. Me without login → 401 UNAUTHENTICATED
+GET http://localhost:4000/api/auth/me
+
+### 4. Correct login → 200 + user
+POST http://localhost:4000/api/auth/login
+Content-Type: application/json
+
+{ "email": "staff1@example.com", "password": "Staff@123" }
+
+### 5. Me after login → 200 + user (cookie sent automatically)
+GET http://localhost:4000/api/auth/me
+
+### 6. Logout → 204
+POST http://localhost:4000/api/auth/logout

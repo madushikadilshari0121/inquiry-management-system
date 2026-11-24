@@ -4,10 +4,7 @@ import { STATUSES, STATUS_LABELS } from '../constants/status';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
 import { useInquiryList } from '../hooks/useInquiryList';
 import StatusBadge from '../components/StatusBadge';
-
-function formatDate(value) {
-  return new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
-}
+import { formatDate } from '../utils/format';
 
 export default function InquiriesPage() {
   const [searchParams, setSearchParams] = useSearchParams();

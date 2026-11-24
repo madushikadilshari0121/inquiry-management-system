@@ -3,6 +3,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AppLayout from './components/AppLayout';
 import LoginPage from './pages/LoginPage';
 import InquiriesPage from './pages/InquiriesPage';
+import NewInquiryPage from './pages/NewInquiryPage';
+import InquiryDetailPage from './pages/InquiryDetailPage';
 
 export default function App() {
   return (
@@ -12,6 +14,8 @@ export default function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
           <Route path="/inquiries" element={<InquiriesPage />} />
+          <Route path="/inquiries/new" element={<NewInquiryPage />} />
+          <Route path="/inquiries/:id" element={<InquiryDetailPage />} />
         </Route>
       </Route>
 
